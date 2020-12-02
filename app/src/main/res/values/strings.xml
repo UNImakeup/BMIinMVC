@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">BMIinMVC</string>
+    <string name="weight" />
+    <string name="height" />
+    <string name="Get_BMI">Get your BMI</string>
+    <string name="input_bmi" />
+</resources>
