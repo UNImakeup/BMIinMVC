@@ -1,13 +1,26 @@
 package com.example.bmiinmvc;
 
 public class BMImodel {
-    static String Height;
-    static String Weight;
+    private static String Height;
+    private static String Weight;
+    private static float bmi;
 
-    public BMImodel(String height, String weight) {
+    private static BMImodel instance;
+
+    private BMImodel(String height, String weight) {
         this.Height = height;
         this.Weight = weight;
+        this.bmi = calculateBMI();
     }
+
+    public static BMImodel getInstance(String height, String weight) {
+        if(instance == null){
+            instance = new BMImodel(height, weight);
+        }
+        return instance;
+    }
+
+
     public static float calculateBMI(){
         String heightStr = Height;
         String weightStr = Weight;
@@ -23,7 +36,7 @@ public class BMImodel {
         return bmi;
     }
 
-    public static String displayBMI(float bmi){
+    public static String displayBMI(){
         String bmiLabel="";
 
         if (Float.compare(bmi, 15f) <= 0) {

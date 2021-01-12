@@ -1,7 +1,10 @@
 package com.example.bmiinmvc;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,9 +13,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    EditText Height, Weight;
+    EditText height, weight;
     TextView answer;
     Button calculate;
+    Button next;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,36 +25,52 @@ public class MainActivity extends AppCompatActivity {
 
         //implementation of BMI calculator
 
-        Height=(EditText) findViewById(R.id.Height);
-        Weight=(EditText) findViewById(R.id.Weight);
+        height =(EditText) findViewById(R.id.height);
+        weight =(EditText) findViewById(R.id.weight);
         answer=(TextView) findViewById(R.id.answer);
         calculate=(Button) findViewById(R.id.calculate);
+        next = findViewById(R.id.button);
+
+        final MainActivityViewModel viewModel =  new ViewModelProvider(this).get(MainActivityViewModel.class); //Skal sætte dependencies. Gjort og tror et er sådan.
+        answer.setText(viewModel.getBmi()); //Skal sættes lig BMI
 
         calculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BMImodel bmImodel = new BMImodel(Height.getText().toString(), Weight.getText().toString());
-                float bmi = BMImodel.calculateBMI();
+                //Kan så fjerne udkommentering på nedenstående og nederste settext og udkommentere de fire linjer med viewmodel,
+                // for at vise at den ikke beholder det når man vender skærmen.
+                //BMImodel bmImodel = BMImodel.getInstance(height.getText().toString(), weight.getText().toString());
 
                 //Error message if nothing typed
-                String str1 = Weight.getText().toString();
-                String str2 = Height.getText().toString();
+                String str1 = weight.getText().toString();
+                String str2 = height.getText().toString();
 
                 if(TextUtils.isEmpty(str1)){
-                    Weight.setError("You need to enter your weight in order to calculate your BMI");
-                    Weight.requestFocus();
+                    weight.setError("You need to enter your weight in order to calculate your BMI");
+                    weight.requestFocus();
                     return;
                 }
 
                 if(TextUtils.isEmpty(str2)){
-                    Height.setError("You need to enter your height in order to calculate your BMI");
-                    Height.requestFocus();
+                    height.setError("You need to enter your height in order to calculate your BMI");
+                    height.requestFocus();
                     return;
                 }
 
-                answer.setText(BMImodel.displayBMI(bmi));
+                viewModel.setBmi(str2, str1);
+                answer.setText(viewModel.getBmi());
+
+                //answer.setText(bmImodel.displayBMI());
 
 
+
+            }
+        });
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent nextpage = new Intent(MainActivity.this, MainActivity2.class);
+                startActivity(nextpage);
             }
         });
 

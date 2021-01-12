@@ -4,4 +4,5 @@
     <string name="height" />
     <string name="Get_BMI">Get your BMI</string>
     <string name="input_bmi" />
+    <string name="next">Next Page</string>
 </resources>
